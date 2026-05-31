@@ -1,0 +1,7 @@
+audio/
+node_modules/
+*.zip
+*.mp3
+*.ogg
+.DS_Store
+._*
