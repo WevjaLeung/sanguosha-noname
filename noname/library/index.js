@@ -12855,18 +12855,20 @@ export class Library {
 							var enterBtn = ui.roombase.add('<span style=\"display:inline-block;width:55px;text-align:center;background:#e94560;color:#fff;border-radius:4px;padding:2px 0;cursor:pointer;font-size:12px\">进入</span>');
 							enterBtn._roomKey = i[4];
 							enterBtn.addEventListener("click", function(e) {
-								e.stopPropagation();
-								if (!window.game || !window.game.online) return;
-								window._status = window._status || {};
-								window._status.enteringroom = false;
-								window.game.send("server", "enter", this._roomKey, window.get.connectNickname ? window.get.connectNickname() : "玩家", "");
+								e.stopPropagation(); e.preventDefault();
+								if (window._status) window._status.enteringroom = false;
+								try {
+									var nick = localStorage.getItem("noname_config_connect_nickname_connect") || "玩家";
+									window.game.send("server", "enter", this._roomKey, nick, window.lib && window.lib.config ? window.lib.config.connect_avatar || "" : "");
+								} catch(ex) { alert("send failed: "+ex.message); }
 							});
 							enterBtn.addEventListener("touchend", function(e) {
-								e.stopPropagation();
-								if (!window.game || !window.game.online) return;
-								window._status = window._status || {};
-								window._status.enteringroom = false;
-								window.game.send("server", "enter", this._roomKey, window.get.connectNickname ? window.get.connectNickname() : "玩家", "");
+								e.stopPropagation(); e.preventDefault();
+								if (window._status) window._status.enteringroom = false;
+								try {
+									var nick = localStorage.getItem("noname_config_connect_nickname_connect") || "玩家";
+									window.game.send("server", "enter", this._roomKey, nick, window.lib && window.lib.config ? window.lib.config.connect_avatar || "" : "");
+								} catch(ex) { alert("send failed: "+ex.message); }
 							});
 							player.roomindex = i;
 							player.initRoom = lib.element.Player.prototype.initRoom;
