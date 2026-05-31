@@ -416,3 +416,36 @@
 })();
 </script>
 </head>
+
+<script>
+// 全局「加入房间」面板 - 独立于noname UI
+(function(){
+  var css = document.createElement('style');
+  css.textContent = '#join-toggle{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999999;background:#e94560;color:#fff;border:none;border-radius:20px;padding:12px 28px;font-size:16px;font-weight:bold;cursor:pointer}#join-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:999999;display:none;background:#16213e;border:2px solid #e94560;border-radius:12px;padding:16px;width:280px;box-shadow:0 4px 20px rgba(0,0,0,.5)}#join-panel input{width:100%;padding:10px;border:2px solid rgba(255,255,255,.2);border-radius:6px;background:rgba(0,0,0,.3);color:#fff;font-size:14px;outline:none;margin-bottom:8px;box-sizing:border-box}#join-panel button{flex:1;padding:10px;border:none;border-radius:6px;font-size:14px;color:#fff;cursor:pointer}';
+  document.head.appendChild(css);
+
+  var toggle = document.createElement('button');
+  toggle.id = 'join-toggle';
+  toggle.textContent = '🔗 加入房间';
+  toggle.onclick = function(){ 
+    var p = document.getElementById('join-panel');
+    p.style.display = p.style.display === 'block' ? 'none' : 'block';
+  };
+
+  var panel = document.createElement('div');
+  panel.id = 'join-panel';
+  panel.innerHTML = '<div style="color:#fff;font-size:13px;margin-bottom:6px">输入房主给的房间号:</div><input id="join-key" placeholder="房间号">'
+    + '<div style="display:flex;gap:8px;margin-top:8px">'
+    + '<button onclick="var k=document.getElementById(\'join-key\').value;if(!k)return alert(\'请输入房间号\');if(!window.game||!window.game.ws||window.game.ws.readyState!==1)return alert(\'请先连接联机服务器\');window.game.send(\'server\',\'enter\',k,localStorage.getItem(\'noname_config_connect_nickname_connect\')||\'玩家\',\'\');document.getElementById(\'join-panel\').style.display=\'none\';alert(\'已发送进房请求\')" style="background:#e94560;color:#fff;border:none;border-radius:6px;padding:10px;font-size:14px;flex:1;cursor:pointer">进入</button>'
+    + '<button onclick="document.getElementById(\'join-panel\').style.display=\'none\'" style="background:#444;color:#fff;border:none;border-radius:6px;padding:10px;font-size:14px;flex:1;cursor:pointer">关闭</button>'
+    + '</div>';
+
+  setTimeout(function(){
+    if (document.body) {
+      document.body.appendChild(toggle);
+      document.body.appendChild(panel);
+    }
+  }, 2000);
+})();
+</script>
+
