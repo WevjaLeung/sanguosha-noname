@@ -12851,7 +12851,23 @@ export class Library {
 						if (!i) continue;
 						map[i[4]] = i;
 						if (!map2[i[4]]) {
-							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 10px);display:inline-block;white-space:nowrap">空房间</div>');
+							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 70px);display:inline-block;white-space:nowrap">空房间</div>');
+							var enterBtn = ui.roombase.add('<span style=\"display:inline-block;width:55px;text-align:center;background:#e94560;color:#fff;border-radius:4px;padding:2px 0;cursor:pointer;font-size:12px\">进入</span>');
+							enterBtn._roomKey = i[4];
+							enterBtn.addEventListener("click", function(e) {
+								e.stopPropagation();
+								if (!window.game || !window.game.online) return;
+								window._status = window._status || {};
+								window._status.enteringroom = false;
+								window.game.send("server", "enter", this._roomKey, window.get.connectNickname ? window.get.connectNickname() : "玩家", "");
+							});
+							enterBtn.addEventListener("touchend", function(e) {
+								e.stopPropagation();
+								if (!window.game || !window.game.online) return;
+								window._status = window._status || {};
+								window._status.enteringroom = false;
+								window.game.send("server", "enter", this._roomKey, window.get.connectNickname ? window.get.connectNickname() : "玩家", "");
+							});
 							player.roomindex = i;
 							player.initRoom = lib.element.Player.prototype.initRoom;
 							player.addEventListener(lib.config.touchscreen ? "touchend" : "click", ui.click.connectroom);
