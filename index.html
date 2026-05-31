@@ -368,4 +368,51 @@
 	<script src="game/config.js"></script>
 	<script src="game/package.js"></script>
 	<script src="game/game.js"></script>
+
+<script>
+(function() {
+  var HOST = '175.178.172.187:80';
+  var tries = 0;
+  setInterval(function() {
+    tries++;
+    try {
+      if (window.game && window.game.connect && !window.game.online && tries === 3) {
+        window.game.connect(HOST);
+      }
+      if (window.game && window.game.online && tries > 5) tries = 100;
+    } catch(e) {}
+  }, 1000);
+
+  // 每 2 秒给房间列表加进入按钮
+  setInterval(function() {
+    try {
+      if (!window.game || !window.game.online) return;
+      var rooms = document.querySelectorAll('.popup.text.pointerdiv');
+      for (var i = 0; i < rooms.length; i++) {
+        var room = rooms[i];
+        if (room.querySelector('.my-enter-btn')) continue;
+        var key = room._link ? room._link.serving : null;
+        if (!key) continue;
+        var btn = document.createElement('button');
+        btn.className = 'my-enter-btn';
+        btn.textContent = '👉 进入';
+        btn.style.cssText = 'display:block;width:90%;margin:4px auto;padding:10px;background:#e94560;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;pointer-events:auto';
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          try {
+            var nick = localStorage.getItem('noname_config_connect_nickname_connect') || '玩家';
+            window.game.send('server', 'enter', key, nick, '');
+            alert('发送进房请求: ' + key);
+          } catch(ex) { alert('error: '+ex.message); }
+          return false;
+        };
+        btn.ontouchend = btn.onclick;
+        room.parentNode.appendChild(btn);
+      }
+    } catch(e) {}
+  }, 2000);
+})();
+</script>
 </head>
