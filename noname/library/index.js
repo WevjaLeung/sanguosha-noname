@@ -12851,7 +12851,7 @@ export class Library {
 						if (!i) continue;
 						map[i[4]] = i;
 						if (!map2[i[4]]) {
-							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 85px);display:inline-block;white-space:nowrap">空房间</div>');
+							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:100%;display:inline-block;white-space:nowrap">空房间</div>');
 							var enterBtn = ui.roombase.add('<span style=\"display:inline-block;width:70px;height:100%;text-align:center;background:#e94560;color:#fff;border-radius:6px;padding:6px 4px;cursor:pointer;font-size:14px;font-weight:bold;margin-left:6px;line-height:1.4;position:relative;z-index:99\">进入</span>');
 							enterBtn._roomKey = i[4];
 							enterBtn.addEventListener("click", function(e) {
