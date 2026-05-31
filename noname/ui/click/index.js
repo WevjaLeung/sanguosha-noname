@@ -717,7 +717,6 @@ export class Click {
 		}
 	}
 	identity(e) {
-		if (_status.dragged) return;
 		_status.clicked = true;
 		if (!game.getIdentityList) return;
 		if (_status.video) return;
@@ -1227,7 +1226,6 @@ export class Click {
 		return uiintro;
 	}
 	volumn_background(e) {
-		if (_status.dragged) return;
 		var volume = this.link;
 		if (volume === 1 && lib.config.volumn_background === 1) {
 			volume = 0;
@@ -1244,7 +1242,6 @@ export class Click {
 		e.stopPropagation();
 	}
 	volumn_audio(e) {
-		if (_status.dragged) return;
 		var volume = this.link;
 		if (volume === 1 && lib.config.volumn_audio === 1) {
 			volume = 0;
@@ -1338,7 +1335,6 @@ export class Click {
 		this._poppedalready = false;
 	}
 	leavehoverpopped() {
-		if (_status.dragged) return;
 		if (this.classList.contains("noleave")) return;
 		this.delete();
 		var button = this._poppedorigin;
@@ -1398,7 +1394,6 @@ export class Click {
 		}
 	}
 	dieswap2() {
-		if (_status.dragged) return;
 		game.swapPlayer(this.link);
 	}
 	touchconfirm() {
@@ -2421,7 +2416,6 @@ export class Click {
 			_status.dialogtouched = false;
 			dialogtouched = true;
 		}
-		if (_status.dragged) return;
 		if (_status.touchpopping) return;
 		if (_status.reloading) return;
 		if (_status.clicked || _status.clicked2) {
@@ -2497,7 +2491,6 @@ export class Click {
 		}
 	}
 	toggle() {
-		if (_status.dragged) return;
 		if (this.parentNode.classList.contains("disabled")) return;
 		_status.tempunpop = true;
 		if (this.link) {
@@ -2511,7 +2504,6 @@ export class Click {
 		}
 	}
 	editor() {
-		if (_status.dragged) return;
 		if (_status.editing) return;
 		_status.clicked = true;
 		this.innerHTML = "";
@@ -2519,7 +2511,6 @@ export class Click {
 		if (this.additionalCommand) this.additionalCommand(this);
 	}
 	switcher() {
-		if (_status.dragged) return;
 		if (this.parentNode.classList.contains("disabled")) return;
 		if (_status.choosing) return;
 		_status.clicked = true;
@@ -2542,7 +2533,6 @@ export class Click {
 		}
 	}
 	choice() {
-		if (_status.dragged) return;
 		if (!_status.choosing) return;
 		_status.choosing.link = this.link;
 		_status.choosing.innerHTML = get.translation(this.link);
@@ -2557,8 +2547,6 @@ export class Click {
 		}
 	}
 	button() {
-		if (_status.dragged) return;
-		if (_status.clicked) return;
 		if (_status.tempNoButton) return;
 		if (_status.draggingtouchdialog) return;
 		if (this.classList.contains("noclick")) return;
@@ -2598,8 +2586,6 @@ export class Click {
 	}
 	card() {
 		delete this._waitingfordrag;
-		if (_status.dragged) return;
-		if (_status.clicked) return;
 		if (ui.intro) return;
 		_status.clicked = true;
 		if (
@@ -2715,8 +2701,6 @@ export class Click {
 		ui.click.charactercard(player.name2, null, null, true, this, player.skin.name2 || player.name2);
 	}
 	connectroom(e) {
-		if (_status.dragged) return;
-		if (_status.clicked) return;
 		if (ui.intro) return;
 		if (this.roomfull) {
 			alert("房间已满");
@@ -2747,8 +2731,6 @@ export class Click {
 		return ui.click.target.apply(this, arguments);
 	}
 	target(e) {
-		if (_status.dragged) return;
-		if (_status.clicked) return;
 		if (ui.intro) return;
 		if (this.classList.contains("connect")) {
 			if (game.online) {
@@ -2890,7 +2872,6 @@ export class Click {
 		}
 	}
 	control() {
-		if (_status.dragged) return;
 		if (ui.control.classList.contains("hidden")) return;
 		var node = this.parentNode;
 		if (node) {
@@ -3131,7 +3112,6 @@ export class Click {
 	}
 	charactercard(name, sourcenode, noedit, resume, avatar, audioName) {
 		if(!audioName) audioName = name;
-		if (_status.dragged) return;
 		if (lib.config.theme != "simple") {
 			ui.window.classList.add("shortcutpaused");
 			ui.menuContainer.classList.add("forceopaque");
@@ -3147,8 +3127,7 @@ export class Click {
 		var layer = ui.create.div(".popup-container");
 		var clicklayer = function (e) {
 			if (_status.touchpopping) return;
-			if (_status.dragged) return;
-			ui.window.classList.remove("shortcutpaused");
+				ui.window.classList.remove("shortcutpaused");
 			ui.window.classList.remove("systempaused");
 			ui.menuContainer.classList.remove("forceopaque");
 			ui.menuContainer.classList.remove("transparent2");
@@ -4016,7 +3995,6 @@ export class Click {
 		ui.window.appendChild(layer);
 	}
 	intro(e) {
-		if (_status.dragged) return;
 		_status.clicked = true;
 		if (this.classList.contains("player") && !this.name) {
 			return;
@@ -4235,8 +4213,6 @@ export class Click {
 	}
 	resume(e) {
 		if (_status.pausing) return;
-		if (_status.dragged) return;
-		if (_status.clicked) return;
 		if (lib.config.test_game) return;
 		this.delete();
 		ui.system.show();
@@ -4263,7 +4239,6 @@ export class Click {
 		ui.system2.classList.remove("shown");
 	}
 	swap() {
-		if (_status.dragged) return;
 		if (this.classList.contains("dead")) return;
 		if (_status.over) return;
 		if (ui.auto) ui.auto.show();
