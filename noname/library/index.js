@@ -12851,24 +12851,28 @@ export class Library {
 						if (!i) continue;
 						map[i[4]] = i;
 						if (!map2[i[4]]) {
-							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 70px);display:inline-block;white-space:nowrap">空房间</div>');
-							var enterBtn = ui.roombase.add('<span style=\"display:inline-block;width:55px;text-align:center;background:#e94560;color:#fff;border-radius:4px;padding:2px 0;cursor:pointer;font-size:12px\">进入</span>');
+							var player = ui.roombase.add('<div class="popup text pointerdiv" style="width:calc(100% - 85px);display:inline-block;white-space:nowrap">空房间</div>');
+							var enterBtn = ui.roombase.add('<span style=\"display:inline-block;width:70px;height:100%;text-align:center;background:#e94560;color:#fff;border-radius:6px;padding:6px 4px;cursor:pointer;font-size:14px;font-weight:bold;margin-left:6px;line-height:1.4;position:relative;z-index:99\">进入</span>');
 							enterBtn._roomKey = i[4];
 							enterBtn.addEventListener("click", function(e) {
 								e.stopPropagation(); e.preventDefault();
-								if (window._status) window._status.enteringroom = false;
-								try {
+								var key = this._roomKey;
+								alert("clicked room key="+key);
+								if (window.game && window.game.ws && window.game.ws.readyState===1) {
+									if (window._status) window._status.enteringroom = false;
 									var nick = localStorage.getItem("noname_config_connect_nickname_connect") || "玩家";
-									window.game.send("server", "enter", this._roomKey, nick, window.lib && window.lib.config ? window.lib.config.connect_avatar || "" : "");
-								} catch(ex) { alert("send failed: "+ex.message); }
+									game.send("server","enter",key,nick,"");
+									alert("sent enter for "+key);
+								} else { alert("not connected, wsReady="+(window.game&&window.game.ws?window.game.ws.readyState:"none")); }
 							});
 							enterBtn.addEventListener("touchend", function(e) {
 								e.stopPropagation(); e.preventDefault();
-								if (window._status) window._status.enteringroom = false;
-								try {
+								var key = this._roomKey;
+								if (window.game && window.game.ws && window.game.ws.readyState===1) {
+									if (window._status) window._status.enteringroom = false;
 									var nick = localStorage.getItem("noname_config_connect_nickname_connect") || "玩家";
-									window.game.send("server", "enter", this._roomKey, nick, window.lib && window.lib.config ? window.lib.config.connect_avatar || "" : "");
-								} catch(ex) { alert("send failed: "+ex.message); }
+									game.send("server","enter",key,nick,"");
+								}
 							});
 							player.roomindex = i;
 							player.initRoom = lib.element.Player.prototype.initRoom;
