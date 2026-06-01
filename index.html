@@ -1,5 +1,61 @@
 <!DOCTYPE html>
 
+<!-- DEBUG: loading indicator and error tracker -->
+<script>
+(function(){
+  document.documentElement.style.background = '#1a1a2e';
+  document.documentElement.style.margin = '0';
+  
+  // Create loading overlay
+  var overlay = document.createElement('div');
+  overlay.id = '__debug_overlay';
+  overlay.innerHTML = '<div style="text-align:center;color:#fff;font-family:-apple-system,sans-serif">'
+    + '<div style="font-size:48px">&#127183;</div>'
+    + '<div id="__debug_msg" style="color:#e94560;font-size:18px;font-weight:bold;margin-top:12px">加载中...</div>'
+    + '<div id="__debug_log" style="color:#888;font-size:12px;margin-top:8px;max-height:120px;overflow-y:auto;white-space:pre-wrap;text-align:left;padding:0 20px"></div>'
+    + '</div>';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:999999';
+  document.documentElement.appendChild(overlay);
+  
+  var logEl = document.getElementById('__debug_log');
+  var msgEl = document.getElementById('__debug_msg');
+  var startTime = Date.now();
+  
+  window.__dbg = function(m) {
+    var t = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+    logEl.textContent += t + ' ' + m + '\n';
+    console.log('[DBG ' + t + ']', m);
+  };
+  
+  window.__dbgOK = function() {
+    overlay.style.display = 'none';
+  };
+  
+  window.__dbgFail = function(m) {
+    msgEl.textContent = '❌ ' + m;
+    msgEl.style.color = '#ff6b6b';
+  };
+  
+  // Catch global errors
+  var _onerror = window.onerror;
+  window.onerror = function(m,s,l,c,e){
+    __dbgFail('JS错误: ' + (m||'').toString().substring(0,100));
+    __dbg('ERR: ' + m + ' @ ' + s + ':' + l);
+    if(_onerror) _onerror.apply(this,arguments);
+  };
+  
+  var _onrej = window.onunhandledrejection;
+  window.onunhandledrejection = function(ev){
+    var r = ev.reason;
+    __dbgFail('Promise错误: ' + ((r&&r.message)||r||'unknown'));
+    if(_onrej) _onrej.apply(this,arguments);
+  };
+  
+  __dbg('页面初始化');
+})();
+</script>
+<script>setTimeout(function(){if(window.game&&window.game.online)window.__dbgOK&&window.__dbgOK()},8000);</script>
+
 <head>
 	<meta charset="UTF-8" />
 	<meta name="format-detection" content="telephone=no" />
@@ -415,6 +471,7 @@
   }, 2000);
 })();
 </script>
+<script>setTimeout(function(){if(window.game&&window.game.online)window.__dbgOK&&window.__dbgOK()},8000);</script>
 
 <script>
 // 房主快捷复制房号
@@ -483,4 +540,5 @@ setInterval(function(){
   }, 2000);
 })();
 </script>
+<script>setTimeout(function(){if(window.game&&window.game.online)window.__dbgOK&&window.__dbgOK()},8000);</script>
 
